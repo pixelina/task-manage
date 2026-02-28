@@ -27,7 +27,8 @@ Vue 3 single-page application for managing projects and tasks. Built with **Vue 
 ## Live version
 
 <!-- Link will be added when the app is deployed -->
-**Deployed app:** _[To be added — deployment pending]_
+
+**Deployed app:** https://task-manage-app-ochre.vercel.app/
 
 ## Deployment (Vercel)
 
