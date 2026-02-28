@@ -2,7 +2,7 @@
   <footer class="app-footer">
     <div class="app-footer__inner">
       <a
-        href="https://github.com/pixelina"
+        href="https://t.me/p_mysiura"
         target="_blank"
         rel="noopener noreferrer"
         class="app-footer__link"
@@ -13,8 +13,7 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="scss">
 .app-footer {
