@@ -1,0 +1,15 @@
+@use '../base/default-settings' as *;
+@use 'variables' as *;
+
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-dark: #{$color-primary-dark};
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-border: #{$color-border};
+  --color-bg: #{$color-bg};
+  --color-bg-alt: #{$color-bg-alt};
+  --font-family-base: #{$font-family-base};
+  --spacing-md: #{$spacing-md};
+  --radius-md: #{$radius-md};
+}

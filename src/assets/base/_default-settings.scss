@@ -1,0 +1,45 @@
+// Normalization (modern-normalize)
+@import 'modern-normalize/modern-normalize.css';
+
+// Base reset and app styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family-base, Inter, system-ui, sans-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text, #213547);
+  background-color: var(--color-bg, #ffffff);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
