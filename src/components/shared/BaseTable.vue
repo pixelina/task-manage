@@ -10,232 +10,226 @@
       @add="emit('add')"
     />
     <UiTable
-    :striped="props.striped"
-    :bordered="props.bordered"
-    :no-body-wrap="!!props.draggable"
-  >
-    <template #header>
-      <tr>
-        <ColumnResizer
-          v-for="col in props.columns"
-          :key="String(col.key)"
-          :width="(col.width ?? 120)"
-          :min-width="col.minWidth ?? 60"
-          :align="col.align"
-          @update:width="(w) => onResize(String(col.key), w)"
-        >
-          <span
-            v-if="col.sortable !== false"
-            class="base-table__sort-header"
-            role="button"
-            tabindex="0"
-            @click="emit('sort', String(col.key))"
-            @keydown.enter.space.prevent="emit('sort', String(col.key))"
-          >
-            {{ col.label }}
-            <span v-if="props.sortKey != null && props.sortKey === col.key" class="base-table__sort-icon" aria-hidden="true">
-              {{ props.sortDir === 'asc' ? '↑' : '↓' }}
-            </span>
-          </span>
-          <template v-else>{{ col.label }}</template>
-        </ColumnResizer>
-      </tr>
-    </template>
-    <template v-if="props.draggable && internalList.length > 0">
-      <draggable
-        tag="tbody"
-        class="base-table__body"
-        :list="internalList"
-        :item-key="rowKeyStr"
-        handle=".base-table__drag-handle"
-        ghost-class="base-table__row--ghost"
-        @change="onDragChange"
-      >
-        <template #item="{ element }">
-          <tr class="base-table__row">
-            <td
-              v-for="(col, colIndex) in props.columns"
-              :key="String(col.key)"
-              class="base-table__cell"
-              :class="[
-                `base-table__cell--${col.align ?? 'left'}`,
-                { 'base-table__cell--first-draggable': props.draggable && colIndex === 0 }
-              ]"
-              :style="{
-                width: col.width ? `${col.width}px` : undefined,
-                minWidth: col.minWidth ? `${col.minWidth}px` : undefined,
-              }"
-            >
-              <span
-                v-if="props.draggable && colIndex === 0"
-                class="base-table__drag-handle"
-                aria-label="Перетягнути"
-              >
-                <span class="base-table__drag-handle-icon">⋮⋮</span>
-              </span>
-              <slot
-                :name="`cell-${String(col.key)}`"
-                :row="element"
-                :column="col"
-                :value="getCellValue(element, String(col.key))"
-                :index="internalList.indexOf(element)"
-              >
-                {{ getCellValue(element, String(col.key)) }}
-              </slot>
-            </td>
-          </tr>
-        </template>
-      </draggable>
-    </template>
-    <template v-else-if="props.data.length">
-      <tr v-for="(row, rowIndex) in props.data" :key="getRowKey(row)">
-        <td
-          v-for="col in props.columns"
-          :key="String(col.key)"
-          class="base-table__cell"
-          :class="[`base-table__cell--${col.align ?? 'left'}`]"
-          :style="{
-            width: col.width ? `${col.width}px` : undefined,
-            minWidth: col.minWidth ? `${col.minWidth}px` : undefined,
-          }"
-        >
-          <slot
-            :name="`cell-${String(col.key)}`"
-            :row="row"
-            :column="col"
-            :value="getCellValue(row, String(col.key))"
-            :index="rowIndex"
-          >
-            {{ getCellValue(row, String(col.key)) }}
-          </slot>
-        </td>
-      </tr>
-    </template>
-    <template v-else-if="props.draggable">
-      <tbody class="base-table__body">
+      :striped="props.striped"
+      :bordered="props.bordered"
+      :no-body-wrap="!!props.draggable"
+    >
+      <template #header>
         <tr>
-          <td :colspan="props.columns.length" class="base-table__empty-cell">
-            <slot name="empty" />
+          <ColumnResizer
+            v-for="col in props.columns"
+            :key="String(col.key)"
+            :width="col.width ?? 120"
+            :min-width="col.minWidth ?? 60"
+            :align="col.align"
+            @update:width="(w) => onResize(String(col.key), w)"
+          >
+            <span
+              v-if="col.sortable !== false"
+              class="base-table__sort-header"
+              role="button"
+              tabindex="0"
+              @click="emit('sort', String(col.key))"
+              @keydown.enter.space.prevent="emit('sort', String(col.key))"
+            >
+              {{ col.label }}
+              <span
+                v-if="props.sortKey != null && props.sortKey === col.key"
+                class="base-table__sort-icon"
+                aria-hidden="true"
+              >
+                {{ props.sortDir === "asc" ? "↑" : "↓" }}
+              </span>
+            </span>
+            <template v-else>{{ col.label }}</template>
+          </ColumnResizer>
+        </tr>
+      </template>
+      <template v-if="props.draggable && internalList.length > 0">
+        <draggable
+          tag="tbody"
+          class="base-table__body"
+          :list="internalList"
+          :item-key="rowKeyStr"
+          handle=".base-table__drag-handle"
+          ghost-class="base-table__row--ghost"
+          @change="onDragChange"
+        >
+          <template #item="{ element }">
+            <tr class="base-table__row">
+              <td
+                v-for="(col, colIndex) in props.columns"
+                :key="String(col.key)"
+                class="base-table__cell"
+                :class="[
+                  `base-table__cell--${col.align ?? 'left'}`,
+                  {
+                    'base-table__cell--first-draggable':
+                      props.draggable && colIndex === 0,
+                  },
+                ]"
+                :style="{
+                  width: col.width ? `${col.width}px` : undefined,
+                  minWidth: col.minWidth ? `${col.minWidth}px` : undefined,
+                }"
+              >
+                <span
+                  v-if="props.draggable && colIndex === 0"
+                  class="base-table__drag-handle"
+                  aria-label="Перетягнути"
+                >
+                  <span class="base-table__drag-handle-icon">⋮⋮</span>
+                </span>
+                <slot
+                  :name="`cell-${String(col.key)}`"
+                  :row="element"
+                  :column="col"
+                  :value="getCellValue(element, String(col.key))"
+                  :index="internalList.indexOf(element)"
+                >
+                  {{ getCellValue(element, String(col.key)) }}
+                </slot>
+              </td>
+            </tr>
+          </template>
+        </draggable>
+      </template>
+      <template v-else-if="props.data.length">
+        <tr v-for="(row, rowIndex) in props.data" :key="getRowKey(row)">
+          <td
+            v-for="col in props.columns"
+            :key="String(col.key)"
+            class="base-table__cell"
+            :class="[`base-table__cell--${col.align ?? 'left'}`]"
+            :style="{
+              width: col.width ? `${col.width}px` : undefined,
+              minWidth: col.minWidth ? `${col.minWidth}px` : undefined,
+            }"
+          >
+            <slot
+              :name="`cell-${String(col.key)}`"
+              :row="row"
+              :column="col"
+              :value="getCellValue(row, String(col.key))"
+              :index="rowIndex"
+            >
+              {{ getCellValue(row, String(col.key)) }}
+            </slot>
           </td>
         </tr>
-      </tbody>
-    </template>
-    <tr v-else>
-      <td :colspan="props.columns.length" class="base-table__empty-cell">
-        <slot name="empty" />
-      </td>
-    </tr>
-  </UiTable>
+      </template>
+      <template v-else-if="props.draggable">
+        <tbody class="base-table__body">
+          <tr>
+            <td :colspan="props.columns.length" class="base-table__empty-cell">
+              <slot name="empty" />
+            </td>
+          </tr>
+        </tbody>
+      </template>
+      <tr v-else>
+        <td :colspan="props.columns.length" class="base-table__empty-cell">
+          <slot name="empty" />
+        </td>
+      </tr>
+    </UiTable>
   </div>
 </template>
 
 <script setup lang="ts" generic="T extends Record<string, unknown>">
-import { ref, watch } from 'vue'
-import type { ToolbarConfig } from '@/types'
-import UiTable from '@/components/ui/UiTable.vue'
-import ColumnResizer from './ColumnResizer.vue'
-import BaseToolbar from './BaseToolbar.vue'
-import draggable from 'vuedraggable'
+import { ref, watch } from "vue";
+import type { ToolbarConfig } from "@/types";
+import UiTable from "@/components/ui/UiTable.vue";
+import ColumnResizer from "./ColumnResizer.vue";
+import BaseToolbar from "./BaseToolbar.vue";
+import draggable from "vuedraggable";
 
 export interface BaseTableColumn<TRow = unknown> {
-  key: keyof TRow | string
-  label: string
-  width?: number
-  minWidth?: number
-  align?: 'left' | 'right' | 'center'
-  sortable?: boolean
+  key: keyof TRow | string;
+  label: string;
+  width?: number;
+  minWidth?: number;
+  align?: "left" | "right" | "center";
+  sortable?: boolean;
 }
 
-export type SortDirection = 'asc' | 'desc'
+export type SortDirection = "asc" | "desc";
 
 export interface BaseTableCellSlotProps<TRow> {
-  row: TRow
-  column: BaseTableColumn<TRow>
-  value: unknown
-  index: number
+  row: TRow;
+  column: BaseTableColumn<TRow>;
+  value: unknown;
+  index: number;
 }
 
 interface Props {
-  columns: BaseTableColumn<T>[]
-  data: T[]
-  rowKey?: keyof T | string
-  striped?: boolean
-  bordered?: boolean
-  sortKey?: string | null
-  sortDir?: SortDirection
-  draggable?: boolean
-  toolbar?: ToolbarConfig | null
-  search?: string
-  filters?: Record<string, string | number | undefined>
+  columns: BaseTableColumn<T>[];
+  data: T[];
+  rowKey?: keyof T | string;
+  striped?: boolean;
+  bordered?: boolean;
+  sortKey?: string | null;
+  sortDir?: SortDirection;
+  draggable?: boolean;
+  toolbar?: ToolbarConfig | null;
+  search?: string;
+  filters?: Record<string, string | number | undefined>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  rowKey: 'id',
+  rowKey: "id",
   striped: false,
   bordered: true,
   sortKey: undefined,
-  sortDir: 'asc',
+  sortDir: "asc",
   draggable: false,
   toolbar: undefined,
-  search: '',
+  search: "",
   filters: undefined,
-})
+});
 
 defineSlots<{
-  empty?: () => unknown
-  [key: `cell-${string}`]: (props: BaseTableCellSlotProps<T>) => unknown
-}>()
+  empty?: () => unknown;
+  [key: `cell-${string}`]: (props: BaseTableCellSlotProps<T>) => unknown;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:column-width', columnKey: string, width: number): void
-  (e: 'sort', columnKey: string): void
-  (e: 'reorder', fromIndex: number, toIndex: number): void
-  (e: 'update:search', value: string): void
-  (e: 'update:filter', key: string, value: string | number): void
-  (e: 'add'): void
-}>()
+  (e: "update:column-width", columnKey: string, width: number): void;
+  (e: "sort", columnKey: string): void;
+  (e: "reorder", fromIndex: number, toIndex: number): void;
+  (e: "update:search", value: string): void;
+  (e: "update:filter", key: string, value: string | number): void;
+  (e: "add"): void;
+}>();
 
-const rowKeyStr = typeof props.rowKey === 'string' ? props.rowKey : 'id'
-const internalList = ref<T[]>([])
-
-function getOrderKeys(list: ReadonlyArray<Record<string, unknown>>): (string | number)[] {
-  return list.map((row) => {
-    const v = row[rowKeyStr]
-    return v != null ? (typeof v === 'number' ? v : String(v)) : ''
-  })
-}
+const rowKeyStr = typeof props.rowKey === "string" ? props.rowKey : "id";
+const internalList = ref<T[]>([]);
 
 watch(
   () => props.data,
   (newData) => {
-    const newKeys = getOrderKeys(newData)
-    const currentKeys = getOrderKeys(internalList.value)
-    const sameOrder =
-      newKeys.length === currentKeys.length &&
-      newKeys.every((k, i) => k === currentKeys[i])
-    if (sameOrder) return
-    internalList.value = [...newData]
+    internalList.value = [...newData];
   },
-  { immediate: true }
-)
+  { immediate: true, deep: true },
+);
 
 function onDragChange(evt: { moved?: { oldIndex: number; newIndex: number } }) {
   if (evt.moved) {
-    emit('reorder', evt.moved.oldIndex, evt.moved.newIndex)
+    emit("reorder", evt.moved.oldIndex, evt.moved.newIndex);
   }
 }
 
 function getRowKey(row: T): string | number {
-  const value = getCellValue(row, rowKeyStr)
-  return value != null ? String(value) : Math.random()
+  const value = getCellValue(row, rowKeyStr);
+  return value != null ? String(value) : Math.random();
 }
 
 function getCellValue(row: T, key: string): unknown {
-  return row[key]
+  return row[key];
 }
 
 function onResize(columnKey: string, width: number) {
-  emit('update:column-width', columnKey, width)
+  emit("update:column-width", columnKey, width);
 }
 </script>
 
@@ -296,7 +290,9 @@ function onResize(columnKey: string, width: number) {
   color: $color-text-muted;
   cursor: grab;
   user-select: none;
-  transition: background-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 
   .base-table__drag-handle-icon {
     display: inline-flex;
