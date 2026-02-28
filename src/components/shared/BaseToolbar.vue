@@ -4,7 +4,7 @@
       <template v-if="showSearch">
         <UiInput
           :model-value="props.search"
-          :placeholder="props.toolbar.search?.placeholder ?? ''"
+          :placeholder="searchPlaceholder"
           class="base-toolbar__search"
           @update:model-value="emit('update:search', $event)"
         />
@@ -26,34 +26,39 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ToolbarConfig } from '@/types'
-import UiInput from '@/components/ui/UiInput.vue'
-import UiSelect from '@/components/ui/UiSelect.vue'
-import UiButton from '@/components/ui/UiButton.vue'
+import { computed } from "vue";
+import type { ToolbarConfig } from "@/types";
+import UiInput from "@/components/ui/UiInput.vue";
+import UiSelect from "@/components/ui/UiSelect.vue";
+import UiButton from "@/components/ui/UiButton.vue";
 
 interface Props {
-  toolbar?: ToolbarConfig | null
-  search?: string
-  filters?: Record<string, string | number | undefined>
+  toolbar?: ToolbarConfig | null;
+  search?: string;
+  filters?: Record<string, string | number | undefined>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   toolbar: undefined,
-  search: '',
+  search: "",
   filters: () => ({}),
-})
+});
 
 const emit = defineEmits<{
-  (e: 'update:search', value: string): void
-  (e: 'update:filter', key: string, value: string | number): void
-  (e: 'add'): void
-}>()
+  (e: "update:search", value: string): void;
+  (e: "update:filter", key: string, value: string | number): void;
+  (e: "add"): void;
+}>();
 
 const showSearch = computed(() => {
-  const s = props.toolbar?.search
-  return s !== false && s !== undefined
-})
+  const s = props.toolbar?.search;
+  return s !== false && s !== undefined;
+});
+
+const searchPlaceholder = computed(() => {
+  const s = props.toolbar?.search;
+  return (s && typeof s === "object" ? s.placeholder : undefined) ?? "";
+});
 </script>
 
 <style scoped lang="scss">
