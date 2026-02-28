@@ -7,7 +7,7 @@
         rel="noopener noreferrer"
         class="app-footer__link"
       >
-        Powered by @pixelina
+        Powered by @p_mysiura
       </a>
     </div>
   </footer>
